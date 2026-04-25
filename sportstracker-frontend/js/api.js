@@ -1,6 +1,5 @@
 // api.js — todas las llamadas al backend
-// Cambia esta URL cuando despliegues en Railway
-const API_BASE = 'http://localhost:8080';
+const API_BASE = 'sportstracker-backend-production.up.railway.app';
 
 /**
  * Helper interno: hace fetch y lanza error si el status no es 2xx.
