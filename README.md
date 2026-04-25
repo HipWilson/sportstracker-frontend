@@ -1,73 +1,63 @@
 # 🏆 SportsTracker — Frontend
 
-Cliente web para rastrear series y documentales deportivos.
-Construido con HTML, CSS y JavaScript vanilla puro — sin frameworks, sin librerías, sin jQuery, sin axios.
+> Cliente web para rastrear series y documentales deportivos.  
+> Construido con **HTML, CSS y JavaScript vanilla puro** — sin frameworks, sin librerías, sin jQuery, sin axios.
 
-**⚙️ Backend repo:** [sportstracker-backend](https://github.com/TU_USUARIO/sportstracker-backend)  
-**🌐 App en producción:** https://TU_USUARIO.github.io/sportstracker-frontend/
+**⚙️ Backend repo:** [sportstracker-backend](https://github.com/HipWilson/sportstracker-backend.git)  
+**🌐 App en producción:** [https://TU_USUARIO.github.io/sportstracker-frontend/](https://hipwilson.github.io/sportstracker-frontend/)
 
 ---
 
-## Stack
+## 📸 Screenshot
+
+<img width="1919" height="1024" alt="image" src="https://github.com/user-attachments/assets/d91c64d4-830f-49ae-b906-45a32060191e" />
+
+---
+
+## 🛠️ Stack
 
 | Tecnología | Uso |
 |---|---|
 | HTML5 | Estructura semántica |
-| CSS3 | Estilos con variables CSS, sin frameworks |
+| CSS3 | Variables CSS, grid de cards, modales, responsive |
 | JavaScript ES6+ | Lógica de la app, `fetch()` nativo para la API |
-| Google Fonts | Bebas Neue + Barlow |
+| Google Fonts | Bebas Neue (display) + Barlow (body) |
 | GitHub Pages | Deploy en producción |
 
 Sin jQuery. Sin axios. Sin React. Solo el navegador.
 
 ---
 
-## ¿Qué es CORS y qué se configuró?
+## 🚀 Correr localmente
 
-CORS (Cross-Origin Resource Sharing) es un mecanismo de seguridad del navegador que bloquea peticiones HTTP entre orígenes distintos. Como este cliente corre en GitHub Pages (`https://TU_USUARIO.github.io`) y el backend corre en Railway (`https://TU_APP.up.railway.app`), son orígenes distintos y el navegador bloquearía los `fetch()` por defecto.
+El frontend no requiere instalación ni build step. Solo abre `index.html`:
 
-La solución se configuró en el servidor Go con el header `Access-Control-Allow-Origin: *`, que le indica al navegador que el servidor acepta peticiones desde cualquier origen. Sin esta configuración, la app no podría comunicarse con la API.
+```bash
+# Opción 1 — Node
+npx serve .
 
----
+# Opción 2 — Python
+python3 -m http.server 3000
 
-## Funcionalidades
+# Opción 3 — cualquier servidor estático
+```
 
-### CRUD de series
-- Crear series con título, deporte, plataforma, estado, episodios, año y descripción
-- Ver el detalle completo de cada serie en un modal
-- Editar cualquier campo de una serie existente
-- Eliminar series con confirmación
+Asegúrate de que el backend esté corriendo en `http://localhost:8080`.  
+La URL de la API está en `js/api.js`:
 
-### Búsqueda y filtros
-- Búsqueda en tiempo real con debounce (espera 380ms antes de consultar)
-- Filtro por estado: pendiente, viendo, completado, abandonado
-- Filtro por deporte
-- Ordenamiento por título, deporte, año, fecha de creación o rating
-- Alternancia entre orden ascendente y descendente
+```js
+const API_BASE = 'http://localhost:8080';
+```
 
-### Paginación
-- Navegación por páginas con botones anterior/siguiente
-- Indicador de página activa
-- Puntos suspensivos para rangos de páginas largas
+Para apuntar al backend en producción (Railway), cámbiala por la URL pública:
 
-### Sistema de rating
-- Calificación del 1 al 10 con selector visual de estrellas
-- Comentario opcional por calificación
-- Promedio de calificaciones visible en cada card
-- Listado y eliminación de calificaciones en el modal de detalle
-
-### Imágenes
-- Subida de imagen desde el formulario de edición (máximo 1MB)
-- Preview inmediato al seleccionar el archivo
-- Fallback con emoji del deporte si no hay imagen
-
-### Exportación
-- **CSV**: generado manualmente con JavaScript, incluye BOM UTF-8 para compatibilidad con Excel
-- **Excel (.xlsx)**: formato SpreadsheetML construido a mano sin ninguna librería, compatible con Excel y LibreOffice
+```js
+const API_BASE = 'https://TU_APP.up.railway.app';
+```
 
 ---
 
-## Estructura del proyecto
+## 📁 Estructura del proyecto
 
 ```
 sportstracker-frontend/
@@ -80,54 +70,32 @@ sportstracker-frontend/
     └── app.js          # Estado, renderizado, eventos, UI completa
 ```
 
-Cada archivo tiene una responsabilidad clara y separada.
+---
+
+## ✅ Challenges implementados
+
+- **CRUD completo de series** — crear, leer, actualizar y eliminar desde la interfaz con modales dedicados.
+- **Búsqueda con debounce** — búsqueda en tiempo real que espera 380ms antes de consultar la API para no saturarla con cada tecla.
+- **Filtros combinados** — filtrado simultáneo por estado, deporte, texto libre, con ordenamiento y dirección (ASC/DESC).
+- **Paginación del lado del servidor** — navegación por páginas con puntos suspensivos para rangos largos.
+- **Sistema de ratings con estrellas** — selector visual 1–10, cálculo de promedio, listado y eliminación de calificaciones.
+- **Subida de imágenes** — upload de portada vía multipart/form-data con preview inmediato y fallback por emoji de deporte.
+- **Exportación a CSV** — generado manualmente con BOM UTF-8 para compatibilidad con Excel, sin ninguna librería.
+- **Exportación a Excel (.xlsx)** — formato SpreadsheetML construido a mano en XML puro, sin librerías, compatible con Excel y LibreOffice.
+- **CORS** — el frontend consume una API en un dominio distinto (Railway vs GitHub Pages); la solución se configuró en el servidor Go con `Access-Control-Allow-Origin: *`.
+- **Diseño responsivo** — layout en grid adaptable a móvil, modales con scroll y header sticky.
 
 ---
 
-## Correr localmente
-
-El frontend no necesita instalación. Solo abre `index.html` en el navegador, o levanta un servidor estático:
-
-```bash
-# Opción 1 — Node
-npx serve .
-
-# Opción 2 — Python
-python3 -m http.server 3000
-
-# Opción 3 — cualquier servidor estático
-```
-
-Asegúrate de que el backend esté corriendo en `http://localhost:8080`. La URL está en `js/api.js`:
-
-```js
-const API_BASE = 'http://localhost:8080';
-```
-
----
-
-## Deploy en GitHub Pages
-
-1. Ir a **Settings → Pages** del repositorio
-2. Source: `Deploy from a branch`
-3. Branch: `main` / `(root)`
-4. Guardar — en aproximadamente 1 minuto estará disponible en:
-   `https://TU_USUARIO.github.io/sportstracker-frontend/`
-
-Antes del deploy, actualizar `API_BASE` en `js/api.js` con la URL pública del backend en Railway:
-
-```js
-const API_BASE = 'https://TU_APP.up.railway.app';
-```
-
----
-
-## Notas de implementación
-
-**CSV manual:** la función `escapeCSV()` encierra en comillas dobles cualquier valor que contenga comas, comillas o saltos de línea, y duplica las comillas internas. Se agrega BOM UTF-8 (`\uFEFF`) al inicio para que Excel detecte correctamente la codificación.
-
-**Excel sin librerías:** se usa el formato SpreadsheetML de Microsoft Office, que es un XML único que Excel y LibreOffice abren directamente. No se necesita crear un archivo ZIP porque SpreadsheetML es un documento XML independiente con la extensión `.xlsx`. Cada celda se tipifica como `String` o `Number` para que Excel la procese correctamente.
-
-**Debounce en búsqueda:** el input de búsqueda espera 380ms después de que el usuario deja de escribir antes de hacer la petición, para no saturar la API con cada tecla.
-
-**Estado global:** toda la app maneja un objeto `state` con la página actual, filtros activos y orden seleccionado. Cualquier cambio en un filtro reinicia la página a 1 antes de recargar.
+## 💬 Reflexión técnica
+ 
+### ¿Usaría este stack de nuevo?
+ 
+**HTML/CSS/JS vanilla — sí, en proyectos pequeños.** El control total sin capas de abstracción fue liberador. `fetch()` nativo resultó suficiente, pero gestionar el estado global a mano se vuelve frágil rápido — en un proyecto más grande usaría React.
+ 
+**Exportación sin librerías — sí, vale la pena una vez.** Construir el CSV y el SpreadsheetML a mano fue el challenge más didáctico: entendí de verdad el BOM UTF-8 y el formato XML de Office. En producción usaría SheetJS, pero el ejercicio da una comprensión que ninguna librería te da.
+ 
+**GitHub Pages — sí, para estáticos es perfecto.** Deploy gratuito, HTTPS automático, cero configuración.
+ 
+**Lo que cambiaría:** TypeScript para el tipado de la API y algún store reactivo simple para el estado.
+ 
