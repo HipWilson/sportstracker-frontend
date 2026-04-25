@@ -1,5 +1,5 @@
 // api.js — todas las llamadas al backend
-const API_BASE = 'sportstracker-backend-production.up.railway.app';
+const API_BASE = 'https://sportstracker-backend-production.up.railway.app';
 
 /**
  * Helper interno: hace fetch y lanza error si el status no es 2xx.
